@@ -73,7 +73,7 @@
     
     //Stage Add Player
     
-    [mightyGame addPlayer:[[PlayerInfo alloc] initWithID:@"You" andSerial:1024]];
+    [mightyGame addPlayer:[[PlayerInfo alloc] initWithID:@"Me" andSerial:1024]];
     [mightyGame addPlayer:[[PlayerInfo alloc] initAsComputer:@"Steve" andPosition:1]];
     [mightyGame addPlayer:[[PlayerInfo alloc] initAsComputer:@"Bill" andPosition:2]];
     [mightyGame addPlayer:[[PlayerInfo alloc] initAsComputer:@"Jack" andPosition:3]];
@@ -107,7 +107,7 @@
     [NSTimer scheduledTimerWithTimeInterval:0.0f target:self selector:@selector(deal) userInfo:nil repeats:NO];
 }
 
--(void) deal{
+-(void) deal{ //움직이는 애니메이션 부분
     NSInteger numOfGivenCards = dealingCount & 3;
     switch(self->dealer){
         case 0:
@@ -173,12 +173,12 @@
     }
     [self.view addSubview:self->dealedCardBackView];
     [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDuration:0.3]; //카드 움직이는 시간
     [UIView setAnimationDelegate:self];
     [UIView setAnimationRepeatAutoreverses:NO];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
     [self->dealedCardBackView setFrame:cardDestination[(dealingCount+self->dealer+1)%5][dealingCount&3]];
-    [UIView setAnimationDidStopSelector:@selector(removeCardBack)];
+    [UIView setAnimationDidStopSelector:@selector(removeCardBack)]; //애니메이션끝나면
     [UIView commitAnimations];
 }
 
@@ -187,7 +187,7 @@
     [NSTimer scheduledTimerWithTimeInterval:0.0f target:self selector:@selector(showGivenDecks) userInfo:nil repeats:NO];
 }
 
--(void) showGivenDecks{
+-(void) showGivenDecks{ //쌓이는거
     switch(self->dealingCount){
         case 0:
             [self.view addSubview:self->cardBackView[(self->dealer * 10) % 50]];
@@ -288,7 +288,7 @@
     }
 }
 
--(void) showUsersCards{
+-(void) showUsersCards{ //카드 보여주는 부분
     NSInteger i=0;
     for(i=0;i<10;i++){
         [self->cardBackView[i+40] removeFromSuperview];
@@ -302,7 +302,7 @@
     return;
 }
 
--(void) bidding{
+-(void) bidding{ // 공약 정하기
     for(NSInteger i=0;i<5;i++){
         self->isPassed[i] = 100;
     }
@@ -315,7 +315,7 @@
     }
 }
 
--(void) userBidding{
+-(void) userBidding{ //내 공약
     const CGFloat biddingViewWidth = viewWidth*0.6f;
     const CGFloat biddingViewHeight = viewHeight*0.4f;
     biddingOKButton = [[UIButton alloc] initWithFrame:CGRectMake(biddingViewWidth*0.7f, biddingViewHeight*0.05f, biddingViewWidth*0.2f, biddingViewHeight*0.1f)];
@@ -615,7 +615,7 @@
     }
     [self->declaringLabel setTextColor:[UIColor whiteColor]];
     self->declaringLabel.textAlignment = NSTextAlignmentCenter;
-    self->declaringLabel.font = [UIFont systemFontOfSize:20.0f];
+    self->declaringLabel.font = [UIFont systemFontOfSize:13.0f];
     [self->declaringLabel setBackgroundColor:[UIColor colorWithRed:0.05f green:0.254f blue:0.05f alpha:0.6f]];
     if(self->biddingCount == 0) [self->biddingView removeFromSuperview];
     [self.view addSubview:self->declaringLabel];
@@ -776,7 +776,7 @@
 }
 
 -(void) showDeclarationResultLabel{
-    self->declarationResultLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewWidth*0.2f, viewHeight*0.4f, viewWidth*0.6f, viewHeight*0.1f)];
+    self->declarationResultLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewWidth*0.07f, viewHeight*0.4f, viewWidth*0.8f, viewHeight*0.1f)];
     [mightyGame setGiruda:(NSInteger)giruda];
     mightyGame.goal = pledge;
     switch(giruda){
@@ -907,7 +907,7 @@
     [self->selectingThreeCardsView setBackgroundColor:[UIColor colorWithRed:0.05f green:0.254f blue:0.05f alpha:0.6f]];
     
     self->selectingThreeCardsLabel = [[UILabel alloc]init];
-    [self->selectingThreeCardsLabel setFrame:CGRectMake(0.0f,viewHeight*0.05f,viewWidth*0.4f, viewHeight*0.08f)];
+    [self->selectingThreeCardsLabel setFrame:CGRectMake(0.0f,viewHeight*0.025f,viewWidth*0.4f, viewHeight*0.08f)];
     [self->selectingThreeCardsLabel setTextColor:[UIColor whiteColor]];
     self->selectingThreeCardsLabel.textAlignment = NSTextAlignmentCenter;
     self->selectingThreeCardsLabel.font = [UIFont systemFontOfSize:15.0f];
@@ -1238,7 +1238,7 @@
     }
     [self->selectingFriendLabel setTextColor:[UIColor whiteColor]];
     self->selectingFriendLabel.textAlignment = NSTextAlignmentCenter;
-    self->selectingFriendLabel.font = [UIFont systemFontOfSize:25.0f];
+    self->selectingFriendLabel.font = [UIFont systemFontOfSize:20.0f];
     [self->selectingFriendView addSubview:self->selectingFriendLabel];
     [self->selectingFriendView setBackgroundColor:[UIColor colorWithRed:0.05f green:0.254f blue:0.05f alpha:0.6f]];
     [self.view addSubview:self->selectingFriendView];
@@ -1450,7 +1450,7 @@
     [self->confirmingFriendLabel setText:[NSString stringWithFormat:@"%@ 프렌드",declaredFriend]];
     [self->confirmingFriendLabel setTextColor:[UIColor whiteColor]];
     self->confirmingFriendLabel.textAlignment = NSTextAlignmentCenter;
-    self->confirmingFriendLabel.font = [UIFont systemFontOfSize:25.0f];
+    self->confirmingFriendLabel.font = [UIFont systemFontOfSize:15.0f];
     [self->confirmingFriendView setBackgroundColor:[UIColor colorWithRed:0.05f green:0.254f blue:0.05f alpha:0.6f]];
     [self->confirmingFriendView addSubview:self->confirmingFriendLabel];
     [self.view addSubview:self->confirmingFriendView];
@@ -1459,16 +1459,16 @@
             [self->declarerInfoView setFrame:CGRectMake(viewWidth*0.5f+nameTagLabelWidth*0.5f,viewHeight*0.94f,declarerInfoViewWidth,declarerInfoViewHeight)];
             break;
         case 1:
-            [self->declarerInfoView setFrame:CGRectMake(viewWidth*0.1f-declarerInfoViewWidth*0.5f,viewHeight*0.6f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
+            [self->declarerInfoView setFrame:CGRectMake(viewWidth*0.15f-declarerInfoViewWidth*0.5f,viewHeight*0.5f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
             break;
         case 2:
-            [self->declarerInfoView setFrame:CGRectMake(viewWidth*9.0f/32.0f-declarerInfoViewWidth*0.5f,viewHeight*0.17f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
+            [self->declarerInfoView setFrame:CGRectMake(viewWidth*9.0f/32.0f-declarerInfoViewWidth*0.5f,viewHeight*0.11f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
             break;
         case 3:
-            [self->declarerInfoView setFrame:CGRectMake(viewWidth*23.0f/32.0f-declarerInfoViewWidth*0.5f,viewHeight*0.17f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
+            [self->declarerInfoView setFrame:CGRectMake(viewWidth*23.0f/32.0f-declarerInfoViewWidth*0.5f,viewHeight*0.11f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
             break;
         case 4:
-            [self->declarerInfoView setFrame:CGRectMake(viewWidth*0.9f-declarerInfoViewWidth*0.5f,viewHeight*0.6f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
+            [self->declarerInfoView setFrame:CGRectMake(viewWidth*0.85f-declarerInfoViewWidth*0.5f,viewHeight*0.5f+nameTagLabelHeight,declarerInfoViewWidth,declarerInfoViewHeight)];
             break;
     }
     [self.view addSubview:self->declarerInfoView];
@@ -2477,8 +2477,8 @@
 
     jokerShapeViewWidth = viewWidth * 0.3f;
     jokerShapeViewHeight = viewHeight * 0.1f;
-    declarerInfoViewWidth = viewWidth * 0.15f;
-    declarerInfoViewHeight = viewWidth * 0.03f;
+    declarerInfoViewWidth = viewWidth * 0.25f;
+    declarerInfoViewHeight = viewWidth * 0.05f;
     
     self->submittingCount = 0;
     
@@ -2542,7 +2542,7 @@
     for(i=0;i<5;i++){
         [nameTagView[i] setTextColor:[UIColor whiteColor]];
         nameTagView[i].textAlignment = NSTextAlignmentCenter;
-        nameTagView[i].font = [UIFont systemFontOfSize:20.0f];
+        nameTagView[i].font = [UIFont systemFontOfSize:12.0f];
     }
     deckBackView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"deck.png"]];
     [deckBackView setFrame:CGRectMake(viewWidth*0.5f - cardWidth*0.5f , viewHeight*0.5f - cardHeight*0.5f,cardHeight*114.0f/96.0f, cardWidth*98.0f/71.0f)];
