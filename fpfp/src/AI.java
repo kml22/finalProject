@@ -108,8 +108,8 @@
         is_there_Spade_Jokercall = true;
     }
 }
-// 수정해야하는거
--(void) chooseAndRemoveThreeCards: (NSInteger*) d1 and: (NSInteger*) d2 and: (NSInteger*) d3{ //이미 13장에서 버리는 것
+                     
+-(void) chooseAndRemoveThreeCards: (NSInteger*) d1 and: (NSInteger*) d2 and: (NSInteger*) d3{
     NSInteger i=0;
     NSInteger j=0;
     NSInteger high = 0;
@@ -120,47 +120,59 @@
     high = 13;
     switch(giruda){
         case SPADE:
+            //기루다를 제외한 카드의 한 종류가 딱 3개이고 모두 숫자카드라면? 버리고 바로 종료, 그림카드가 있으면 밑의 코드 실행
+            //만약 한 종류가 2개 이하이고 모두 숫자카드라면? 우선순위를 제일 낮게 주고 밑의 코드 실행
+            
             if(owners_card_map[38] == 1)    priority[low++] = 38;   // Mighty
             if(owners_card_map[52] == 1)    priority[low++] = 52;   // Joker
             for(i=51;i>=39;i--){                                    // Giruda
                 if(owners_card_map[i] == 1) priority[low++] = i;
                 if(low == high) break;
             }
-            if(low == high) break;
-            for(i=37;i>=26;i--){                                    //Diamond
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
+            
+            ///clover///
+            for(i=0;i<=7;i++){ //클로버 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
+            }
+            for(i=12;i>=8;i--){ //클로버 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
                 if(low == high) break;
             }
             if(low == high) break;
-            for(j=26;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///heart///
+            for(i=13;i<=20;i++){ //하트 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
-            for(i=25;i>=13;i--){                                    //Heart
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
-                if(low == high)   break;
-            }
-            if(low == high) break;
-            for(j=13;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
-            }
-            if(low == high)   break;
-            for(i=12;i>=0;i--){                                     //Clover
-                if(owners_card_map[i] == 1) priority[--high] = i;
-                else                        break;
-                if(low == high)   break;
+            for(i=25;i>=21;i--){ //하트 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
             }
             if(low == high) break;
-            for(j=0;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///diamond///
+            for(i=26;i<=33;i++){ //다이아몬드 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
+            for(i=37;i>=34;i--){ //다이아몬드 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
+            }
+            if(low == high) break;
             break;
+            //기루다 빼고 모든 카드 모양의 그림카드를 배열 앞에서부터 채워 넣은 후 나머지 숫자 카드를 채워 넣음
+            
+            ////여기서부터 수정/// 기루다를 제외한 나머지 카드를 앞에서부터 채워넣음 연속x
+            
         case DIAMOND:
             if(owners_card_map[51] == 1)    priority[low++] = 51;   // Mighty
             if(owners_card_map[52] == 1)    priority[low++] = 52;   // Joker
@@ -168,40 +180,45 @@
                 if(owners_card_map[i] == 1) priority[low++] = i;
                 if(low == high) break;
             }
-            if(low == high) break;
-            for(i=50;i>=39;i--){                                    //Spade
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
+            
+            ///clover///
+            for(i=0;i<=7;i++){ //클로버 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
+            }
+            for(i=12;i>=8;i--){ //클로버 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
                 if(low == high) break;
             }
             if(low == high) break;
-            for(j=39;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///heart///
+            for(i=13;i<=20;i++){ //하트 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
-            for(i=25;i>=13;i--){                                    //Heart
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
-                if(low == high)   break;
-            }
-            if(low == high) break;
-            for(j=13;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
-            }
-            if(low == high)   break;
-            for(i=12;i>=0;i--){                                     //Clover
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
-                if(low == high)   break;
+            for(i=25;i>=21;i--){ //하트 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
             }
             if(low == high) break;
-            for(j=0;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///spade///
+            for(i=39;i<=46;i++){ //스페이드 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
+            for(i=50;i>=47;i--){ //스페이드 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
+            }
+            if(low == high) break;
             break;
         case HEART:
             if(owners_card_map[51] == 1)    priority[low++] = 51;   // Mighty
@@ -211,39 +228,45 @@
                 if(low == high) break;
             }
             if(low == high) break;
-            for(i=50;i>=39;i--){                                    //Spade
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
+            
+            ///clover///
+            for(i=0;i<=7;i++){ //클로버 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
+            }
+            for(i=12;i>=8;i--){ //클로버 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
                 if(low == high) break;
             }
             if(low == high) break;
-            for(j=39;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///spade///
+            for(i=39;i<=46;i++){ //spade 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
-            for(i=38;i>=26;i--){                                    //Diamond
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
-                if(low == high)   break;
-            }
-            if(low == high) break;
-            for(j=26;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
-            }
-            if(low == high)   break;
-            for(i=12;i>=0;i--){                                     //Clover
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
-                if(low == high)   break;
+            for(i=50;i>=47;i--){ //spade 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
             }
             if(low == high) break;
-            for(j=0;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///diamond///
+            for(i=26;i<=33;i++){ //다이아몬드 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
+            for(i=38;i>=34;i--){ //다이아몬드 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
+            }
+            if(low == high) break;
             break;
         case CLOVER:
             if(owners_card_map[51] == 1)    priority[low++] = 51;   // Mighty
@@ -253,39 +276,45 @@
                 if(low == high) break;
             }
             if(low == high) break;
-            for(i=50;i>=39;i--){                                    //Spade
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
+            
+            ///spade///
+            for(i=39;i<=46;i++){ //spade 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
+            }
+            for(i=50;i>=47;i--){ //spade 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
                 if(low == high) break;
             }
             if(low == high) break;
-            for(j=39;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///heart///
+            for(i=13;i<=20;i++){ //하트 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
-            for(i=38;i>=26;i--){                                    //Diamond
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
-                if(low == high)   break;
-            }
-            if(low == high) break;
-            for(j=26;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
-            }
-            if(low == high)   break;
-            for(i=25;i>=13;i--){                                    //Heart
-                if(owners_card_map[i] == 1) priority[low++] = i;
-                else                        break;
-                if(low == high)   break;
+            for(i=25;i>=21;i--){ //하트 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
             }
             if(low == high) break;
-            for(j=13;j<=i;j++){
-                if(owners_card_map[j] == 1) priority[--high] = j;
-                if(low == high)   break;
+            
+            ///diamond///
+            for(i=26;i<=33;i++){ //다이아몬드 숫자 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[--high] = i;
+                if(low == high) break;
             }
-            if(low == high)   break;
+            for(i=38;i>=34;i--){ //다이아몬드 그림 카드 몇 개인지 세기
+                if(owners_card_map[i] == 1)
+                    priority[low++] = i;
+                if(low == high) break;
+            }
+            if(low == high) break;
             break;
         default:
             break;
@@ -297,7 +326,7 @@
     self->submitted_card_map[priority[11]] = self->position;
     self->submitted_card_map[priority[12]] = self->position;
     
-    for(i=0;i<13;i++){
+    for(i=0;i<13;i++){ //여기서부터는 손 안대도 됨
         switch(priority[i] / 13){
             case 0:
                 [output appendFormat:@"C"];
@@ -337,7 +366,7 @@
     }
     else    self->isFriend = NO;
 }
-// 수정 
+
 -(NSInteger) chooseFriend{
     if(giruda == SPADE){
         if(!is_there_Red_Mighty)    return chingooCard = 0x100+38;
@@ -350,7 +379,7 @@
         case SPADE:
             if(owners_card_map[51] == 0)    return chingooCard = 0x100+51;
             else if(owners_card_map[50] == 0)   return chingooCard = 0x100+50;
-            else if((owners_card_map[12] == 0) && (owners_card_map[25] == 0))   return chingooCard = 0x300; // == 1 == 1 이어야
+            else if((owners_card_map[12] == 1) && (owners_card_map[25] == 1))   return chingooCard = 0x300;
             else{
                 if(owners_card_map[25] == 0)    return chingooCard = 0x100+25;
                 else if(owners_card_map[12] == 0)   return chingooCard = 0x100+12;
@@ -358,7 +387,7 @@
         case DIAMOND:
             if(owners_card_map[38] == 0)    return chingooCard = 0x100+38;
             else if(owners_card_map[37] == 0)   return chingooCard = 0x100+37;
-            else if((owners_card_map[12] == 0) && (owners_card_map[25] == 0))   return chingooCard = 0x300;
+            else if((owners_card_map[12] == 1) && (owners_card_map[25] == 1))   return chingooCard = 0x300;
             else{
                 if(owners_card_map[25] == 0)    return chingooCard = 0x100+25;
                 else if(owners_card_map[12] == 0)   return chingooCard = 0x100+12;
@@ -366,7 +395,7 @@
         case HEART:
             if(owners_card_map[25] == 0)    return chingooCard = 0x100+25;
             else if(owners_card_map[24] == 0)   return chingooCard = 0x100+24;
-            else if((owners_card_map[12] == 0) && (owners_card_map[38] == 0))   return chingooCard = 0x300;
+            else if((owners_card_map[12] == 1) && (owners_card_map[38] == 1))   return chingooCard = 0x300;
             else{
                 if(owners_card_map[38] == 0)    return chingooCard = 0x100+38;
                 else if(owners_card_map[12] == 0)   return chingooCard = 0x100+12;
@@ -374,7 +403,7 @@
         case CLOVER:
             if(owners_card_map[12] == 0)    return chingooCard = 0x100+12;
             else if(owners_card_map[11] == 0)   return chingooCard = 0x100+11;
-            else if((owners_card_map[38] == 0) && (owners_card_map[25] == 0))   return chingooCard = 0x300;
+            else if((owners_card_map[38] == 1) && (owners_card_map[25] == 1))   return chingooCard = 0x300;
             else{
                 if(owners_card_map[38] == 0)    return chingooCard = 0x100+38;
                 else if(owners_card_map[25] == 0)   return chingooCard = 0x100+25;
@@ -382,7 +411,7 @@
         default:
             break;
     }
-    return chingooCard = 0x400;// ?? 언제
+    return chingooCard = 0x400;
 }
 
 -(void) removeOwnersCard: (NSInteger) card{
@@ -436,7 +465,7 @@
         if((self->Turn == 1) && (giruda != NOGIRUDA)){
             for(i=0;i<53;i++){
                 if(owners_card_map[i]){
-                    switch(giruda){
+                    switch(giruda){//첫 판에 기루다를 못 내니까
                         case SPADE:
                             if(i/13 != 3)  possibleCardIndex[numOfPossibleCards++] = i;
                             break;
@@ -466,13 +495,13 @@
                 }
             }
         }
-        else{
+        else{//선인데 첫 턴이 아닐 경우
             for(i=0;i<53;i++){
                 if(owners_card_map[i])  possibleCardIndex[numOfPossibleCards++] = i;
             }
         }
     }
-    else{
+    else{//선이 아닐 경우
         switch(firstShape){
             case SPADE:
                 for(i=39;i<52;i++){
@@ -1091,10 +1120,12 @@
         tmpGoal = num_of_spade + 9;
         if(is_there_Red_Mighty) tmpGoal++;
         if(is_there_Joker) tmpGoal++;
+        if(owners_card_map[50] == 1) tmpGoal++;//추가한 코드
         if(tmpGoal > pastGoal){
-            gapGoal = tmpGoal - pastGoal;
+            //gapGoal = tmpGoal - pastGoal;
             decision.shp = SPADE;
-            decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            //decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            decision.goal = pastGoal + 1;//추가한 코드
             return decision;
         }
     }
@@ -1102,10 +1133,12 @@
         tmpGoal = num_of_diamond+ 9;
         if(is_there_Mighty) tmpGoal++;
         if(is_there_Joker) tmpGoal++;
+        if(owners_card_map[37] == 1) tmpGoal++;//추가한 코드
         if(tmpGoal > pastGoal){
-            gapGoal = tmpGoal - pastGoal;
+            //gapGoal = tmpGoal - pastGoal;
             decision.shp = DIAMOND;
-            decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            //decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            decision.goal = pastGoal + 1;//추가한 코드
             return decision;
         }
     }
@@ -1113,10 +1146,12 @@
         tmpGoal = num_of_heart + 9;
         if(is_there_Mighty) tmpGoal++;
         if(is_there_Joker) tmpGoal++;
+        if(owners_card_map[24] == 1) tmpGoal++;//추가한 코드
         if(tmpGoal > pastGoal){
-            gapGoal = tmpGoal - pastGoal;
+            //gapGoal = tmpGoal - pastGoal;
             decision.shp = HEART;
-            decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            //decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            decision.goal = pastGoal + 1;//추가한 코드
             return decision;
         }
     }
@@ -1124,10 +1159,12 @@
         tmpGoal = num_of_clover + 9;
         if(is_there_Mighty) tmpGoal++;
         if(is_there_Joker) tmpGoal++;
+        if(owners_card_map[11] == 1) tmpGoal++;//추가한 코드
         if(tmpGoal > pastGoal){
-            gapGoal = tmpGoal - pastGoal;
+            //gapGoal = tmpGoal - pastGoal;
             decision.shp = CLOVER;
-            decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            //decision.goal = pastGoal + arc4random()%gapGoal + 1;
+            decision.goal = pastGoal + 1;//추가한 코드
             return decision;
         }
     }
